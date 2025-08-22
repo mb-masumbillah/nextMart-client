@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 
 
 
-const page = () => {
+const HomePage = () => {
   return (
     <div>
       <Button>click now</Button>
@@ -10,4 +10,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default HomePage;
