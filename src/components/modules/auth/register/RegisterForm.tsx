@@ -41,7 +41,7 @@ const RegisterForm = () => {
       }
       reset();
     } catch (error: any) {
-      throw Error(error);
+      throw new Error(error);
     }
   };
 

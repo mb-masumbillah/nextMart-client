@@ -15,6 +15,8 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { loginSchema } from "./loginValidation";
 import Link from "next/link";
 import Logo from "@/app/assets/svgs/Logo";
+import { loginUser } from "@/services/AuthServices";
+import { toast } from "sonner";
 
 const LoginForm = () => {
   const form = useForm({
@@ -26,12 +28,19 @@ const LoginForm = () => {
     reset,
   } = form;
 
-  const onSubmit: SubmitHandler<FieldValues> = (data: FieldValues) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data: FieldValues) => {
     try {
-        
+      const res = await loginUser(data);
+
+      if (res?.success) {
+        toast.success(res?.message);
+      } else {
+        toast.error(res?.message);
+      }
+
       reset();
     } catch (error: any) {
-      throw Error(error);
+      throw new Error(error);
     }
   };
 
