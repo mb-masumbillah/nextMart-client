@@ -23,10 +23,16 @@ const LoginForm = () => {
 
   const {
     formState: { isSubmitting },
+    reset,
   } = form;
 
   const onSubmit: SubmitHandler<FieldValues> = (data: FieldValues) => {
-    console.log(data);
+    try {
+        
+      reset();
+    } catch (error: any) {
+      throw Error(error);
+    }
   };
 
   return (
