@@ -20,7 +20,7 @@ import { toast } from "sonner";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
 
-const LoginForm = () => {
+const LoginForm = () => {  
   const form = useForm({
     resolver: zodResolver(loginSchema),
   });
@@ -63,7 +63,7 @@ const LoginForm = () => {
     <div className="border-2 border-gray-300 rounded-xl space-y-7 flex-grow max-w-md w-full p-5">
       <div className="flex items-center space-x-4 ">
         <Logo />
-        <div>
+        <div> 
           <h1 className="text-xl font-semibold">Login</h1>
           <p className="font-extralight text-sm text-gray-600">Welcome back!</p>
         </div>
@@ -102,7 +102,6 @@ const LoginForm = () => {
               onChange={handleRecapture}
             />
           </div>
-
           <Button
             disabled={reCaptchaStatus ? false : true}
             type="submit"
