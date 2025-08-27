@@ -44,7 +44,7 @@ export const loginUser = async (userData: FieldValues) => {
 
     return result;
   } catch (error: any) {
-    Error(error);
+    return Error(error);
   }
 };
 
@@ -79,4 +79,8 @@ export const reCaptchaTokenVerification = async (token: string) => {
   } catch (error: any) {
     return Error(error);
   }
+};
+
+export const logout = async () => {
+  (await cookies()).delete("accessToken");
 };
