@@ -19,12 +19,16 @@ import { loginUser, reCaptchaTokenVerification } from "@/services/AuthServices";
 import { toast } from "sonner";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
-const LoginForm = () => {  
+const LoginForm = () => {
   const form = useForm({
     resolver: zodResolver(loginSchema),
   });
   const [reCaptchaStatus, setReCaptchaStatus] = useState(false);
+
+  const redirect = useSearchParams().get("redirectPath");
+  const route = useRouter();
 
   const {
     formState: { isSubmitting },
@@ -49,6 +53,12 @@ const LoginForm = () => {
 
       if (res?.success) {
         toast.success(res?.message);
+
+        if (redirect) {
+          route.push(redirect);
+        } else {
+          route.push("/profile");
+        }
       } else {
         toast.error(res?.message);
       }
@@ -63,7 +73,7 @@ const LoginForm = () => {
     <div className="border-2 border-gray-300 rounded-xl space-y-7 flex-grow max-w-md w-full p-5">
       <div className="flex items-center space-x-4 ">
         <Logo />
-        <div> 
+        <div>
           <h1 className="text-xl font-semibold">Login</h1>
           <p className="font-extralight text-sm text-gray-600">Welcome back!</p>
         </div>
