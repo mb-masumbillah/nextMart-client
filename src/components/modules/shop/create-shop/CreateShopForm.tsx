@@ -13,8 +13,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { createShop } from "@/services/Shop";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const CreateShopForm = () => {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
@@ -27,7 +29,37 @@ const CreateShopForm = () => {
   } = form;
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
+    const servicesOffered = data?.servicesOffered
+      .split(",")
+      .map((service: string) => service.trim())
+      .filter((service: string) => service !== "");
+
+
+    const modifiedData = {
+      ...data,
+      servicesOffered: servicesOffered,
+      establishedYear: Number(data?.establishedYear),
+    };
+
+ 
+
+    try {
+      const formData = new FormData();
+
+      formData.append("data", JSON.stringify(modifiedData));
+      formData.append("logo", imageFiles[0] as File);
+
+
+      const res = await createShop(formData);
+
+      console.log(res);
+
+      if (res.success) {
+        toast.success(res.message);
+      }
+    } catch (error: any) {
+      return Error(error);
+    }
   };
 
   return (
@@ -189,7 +221,7 @@ const CreateShopForm = () => {
                     <FormLabel>Services Offered</FormLabel>
                     <FormControl>
                       <textarea
-                        className="h-36 border rounded-2xl"
+                        className="h-36 border rounded-2xl py-3 px-5"
                         {...field}
                         value={field.value || ""}
                       />

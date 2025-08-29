@@ -19,6 +19,8 @@ import Link from "next/link";
 const Navbar = () => {
   const { user, setIsLoading } = useUser();
 
+  console.log(user)
+
   const handleLogOut = async () => {
     await logout();
     setIsLoading(true);
@@ -47,11 +49,14 @@ const Navbar = () => {
           </Button>
           {user ? (
             <>
-              <Link href="/create-shop">
-                <Button className="rounded-full" variant="outline">
-                  Create Shop
-                </Button>
-              </Link>
+              {user?.hasShop ? (
+                ""
+              ) : (
+                <Link href="/create-shop">
+                  <Button className="rounded-full">Create Shop</Button>
+                </Link>
+              )}
+
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <Avatar>
