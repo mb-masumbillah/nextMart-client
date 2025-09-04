@@ -1,11 +1,11 @@
 "use client"
 
-import { ICategory } from "@/types/category";
 import { ColumnDef } from "@tanstack/react-table";
 import { Trash } from "lucide-react";
 import Image from "next/image";
 import CreateCategoryModal from "./CreateCategoryModal";
 import { NMTable } from "@/components/ui/core/NMTable";
+import { ICategory } from "@/types";
 
 type TCategoriesProps = {
   categories: ICategory[];
