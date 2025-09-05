@@ -1,30 +1,43 @@
+"use client";
+
 import { ColumnDef } from "@tanstack/react-table";
 import CreateBrandModal from "./CreateBrandModal";
 import { IBrand } from "@/types";
 import Image from "next/image";
 import { Trash } from "lucide-react";
 import { NMTable } from "@/components/ui/core/NMTable";
+import NMDeleteConfirmationModel from "@/components/ui/core/NMModal/NMDeleteConfirmationModel";
+import { useState } from "react";
+import { deleteBrand } from "@/services/brand";
+import { toast } from "sonner";
 
 export type TBrandsProps = {
   brands: IBrand[];
 };
 
-export const data = [
-  {
-    _id: "1",
-    name: "Apple",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg",
-    isActive: true,
-    createdAt: "2025-09-01",
-    updatedAt: "2025-09-01",
-  }
-];
+const ManageBrands = ({ brands }: TBrandsProps) => {
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
-
-
-const ManageBrands = () => {
   const handleDelete = (data: IBrand) => {
-    console.log(data);
+    setSelectedId(data._id);
+    setSelectedItem(data?.name);
+    setModalOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      const res = await deleteBrand(selectedId as string);
+
+      if (res.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
+    } catch (error: any) {
+      console.log(error.message);
+    }
   };
 
   const columns: ColumnDef<IBrand>[] = [
@@ -85,7 +98,13 @@ const ManageBrands = () => {
         <h1 className="text-xl font-bold">Manage Brands</h1>
         <CreateBrandModal />
       </div>
-      <NMTable data={data} columns={columns} />
+      <NMTable data={brands} columns={columns} />
+      <NMDeleteConfirmationModel
+        name={selectedItem}
+        isOpen={isModalOpen}
+        onOpenChange={setModalOpen}
+        onConfirm={handleDeleteConfirm}
+      />
     </div>
   );
 };

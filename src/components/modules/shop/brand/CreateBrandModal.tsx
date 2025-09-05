@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import NMImageUploader from "@/components/ui/core/NMImageUploader";
@@ -19,8 +19,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { createBrands } from "@/services/brand";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const CreateBrandModal = () => {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
@@ -33,10 +35,28 @@ const CreateBrandModal = () => {
   } = form;
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
+
+    console.log(data)
+
+    
+    try {
+      const formData = new FormData();
+
+      formData.append("data", JSON.stringify(data));
+      formData.append("logo", imageFiles[0] as File);
+
+      const res = await createBrands(formData);
+
+      if (res.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
   };
 
-  console.log(imageFiles)
 
   return (
     <Dialog>
