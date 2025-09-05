@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Trash } from "lucide-react";
@@ -22,14 +22,18 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
       header: () => <div>Category Name</div>,
       cell: ({ row }) => (
         <div className="flex items-center space-x-3">
-          <Image
-            src={row.original.icon}
-            alt={row.original.name}
-            width={40}
-            height={40}
-            className="w-8 h-8 rounded-full"
-          />
-          <span className="truncate">{row.original.name}</span>
+          {row.original.icon && (
+            <>
+              <Image
+                src={row?.original?.icon}
+                alt={row?.original?.name}
+                width={40}
+                height={40}
+                className="w-8 h-8 rounded-full"
+              />
+              <span className="truncate">{row?.original?.name}</span>
+            </>
+          )}
         </div>
       ),
     },
