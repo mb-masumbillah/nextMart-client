@@ -6,14 +6,41 @@ import Image from "next/image";
 import CreateCategoryModal from "./CreateCategoryModal";
 import { NMTable } from "@/components/ui/core/NMTable";
 import { ICategory } from "@/types";
+import NMDeleteConfirmationModel from "@/components/ui/core/NMModal/NMDeleteConfirmationModel";
+import { useState } from "react";
+import { deleteCategory } from "@/services/category";
+import { toast } from "sonner";
 
 type TCategoriesProps = {
   categories: ICategory[];
 };
 
 const ManageCategories = ({ categories }: TCategoriesProps) => {
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+
   const handleDelete = (data: ICategory) => {
-    console.log(data);
+    setSelectedId(data?._id);
+    setSelectedItem(data?.name);
+    setModalOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      if (selectedId) {
+        const res = await deleteCategory(selectedId);
+        console.log(res);
+
+        if (res.success) {
+          toast.success(res?.message);
+        } else {
+          toast.error(res?.message);
+        }
+      }
+    } catch (error: any) {
+      console.log(error.message);
+    }
   };
 
   const columns: ColumnDef<ICategory>[] = [
@@ -70,12 +97,18 @@ const ManageCategories = ({ categories }: TCategoriesProps) => {
   ];
 
   return (
-    <div>
+    <div className="space-y-8">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold">Manage Categories</h1>
         <CreateCategoryModal />
       </div>
       <NMTable data={categories} columns={columns} />
+      <NMDeleteConfirmationModel
+        name={selectedItem}
+        isOpen={isModalOpen}
+        onOpenChange={setModalOpen}
+        onConfirm={handleDeleteConfirm}
+      />
     </div>
   );
 };
