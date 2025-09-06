@@ -23,8 +23,10 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { getAllBrands } from "@/services/brand";
 import { getAllCategories } from "@/services/category";
+import { createProduct } from "@/services/product";
 import { IBrand, ICategory } from "@/types";
 import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   FieldValues,
@@ -32,12 +34,14 @@ import {
   useFieldArray,
   useForm,
 } from "react-hook-form";
+import { toast } from "sonner";
 
 const CreateProductForm = () => {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreview, setImagePreview] = useState<string[] | []>([]);
   const [categories, setCategrise] = useState<ICategory[] | []>([]);
   const [brands, setBrands] = useState<IBrand[] | []>([]);
+  const router = useRouter();
 
   const form = useForm({
     defaultValues: {
@@ -98,7 +102,7 @@ const CreateProductForm = () => {
     fetchData();
   }, []);
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data: FieldValues) => {
     const availableColors = data?.availableColors.map(
       (color: { value: string }) => color.value
     );
@@ -112,11 +116,37 @@ const CreateProductForm = () => {
         (specification[item.key] = item.value)
     );
 
-    
-    // const formData = new FormData()
+    const modifiedData = {
+      ...data,
+      availableColors,
+      keyFeatures,
+      specification,
+      price: parseFloat(data?.price),
+      weight: parseFloat(data?.weight),
+      stock: parseInt(data?.stock),
+    };
 
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(modifiedData));
 
+    for (const file of imageFiles) {
+      formData.append("images", file);
+    }
 
+    try {
+      const res = await createProduct(formData);
+
+      console.log(res);
+
+      if (res?.success) {
+        toast.success(res?.message);
+        router.push("/user/shop/all-products");
+      } else {
+        toast.error(res?.message);
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
   };
 
   return (
