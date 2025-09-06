@@ -29,14 +29,18 @@ const ManageProducts = ({ products }: TProductProps) => {
       header: "Product Name",
       cell: ({ row }) => (
         <div className="flex items-center space-x-3">
-          <Image
-            src={row.original.imageUrls[0]}
-            alt={row.original.name}
-            width={40}
-            height={40}
-            className="w-8 h-8 rounded-full"
-          />
-          <span className="truncate">{row.original.name}</span>
+          {row.original.imageUrls && (
+            <>
+              <Image
+                src={row.original?.imageUrls[0]}
+                alt={row.original.name}
+                width={40}
+                height={40}
+                className="w-8 h-8 rounded-full"
+              />
+              <span className="truncate">{row.original.name}</span>
+            </>
+          )}
         </div>
       ),
     },

@@ -23,8 +23,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { getAllBrands } from "@/services/brand";
 import { getAllCategories } from "@/services/category";
-import { createProduct } from "@/services/product";
-import { IBrand, ICategory } from "@/types";
+import { createProduct, updateProduct } from "@/services/product";
+import { IBrand, ICategory, IProduct } from "@/types";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -36,25 +36,33 @@ import {
 } from "react-hook-form";
 import { toast } from "sonner";
 
-const CreateProductForm = () => {
+const UpdateProductForm = ({ product }: { product: IProduct }) => {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
-  const [imagePreview, setImagePreview] = useState<string[] | []>([]);
+  const [imagePreview, setImagePreview] = useState<string[] | []>(
+    product?.imageUrls || []
+  );
   const [categories, setCategrise] = useState<ICategory[] | []>([]);
   const [brands, setBrands] = useState<IBrand[] | []>([]);
   const router = useRouter();
 
   const form = useForm({
     defaultValues: {
-      name: "",
-      description: "",
-      price: "",
-      category: "",
-      brand: "",
-      stock: "",
-      weight: "",
-      availableColors: [{ value: "" }],
-      keyFeatures: [{ value: "" }],
-      specification: [{ key: "", value: "" }],
+      name: product?.name || "",
+      description: product?.description || "",
+      price: product?.price || "",
+      category: product?.category.name || "",
+      brand: product?.brand.name || "",
+      stock: product?.stock || "",
+      weight: product?.weight || "",
+      availableColors: product?.availableColors?.map((color) => ({
+        value: color,
+      })) || [{ value: "" }],
+      keyFeatures: product?.keyFeatures?.map((feature) => ({
+        value: feature,
+      })) || [{ value: "" }],
+      specification: Object.entries(product?.specification || {}).map(
+        ([key, value]) => ({ key, value })
+      ) || [{ key: "", value: "" }],
     },
   });
 
@@ -134,7 +142,7 @@ const CreateProductForm = () => {
     }
 
     try {
-      const res = await createProduct(formData);
+      const res = await updateProduct(formData, product._id);
 
       console.log(res);
 
@@ -440,4 +448,4 @@ const CreateProductForm = () => {
   );
 };
 
-export default CreateProductForm;
+export default UpdateProductForm;
