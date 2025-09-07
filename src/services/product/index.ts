@@ -21,13 +21,16 @@ export const createProduct = async (data: FormData): Promise<any> => {
   }
 };
 
-export const getAllProducts = async () => {
+export const getAllProducts = async (page?: string, limit?: string) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/product`, {
-      next: {
-        tags: ["PRODUCT"],
-      },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/product?limit=${limit}&page=${page}`,
+      {
+        next: {
+          tags: ["PRODUCT"],
+        },
+      }
+    );
     return res.json();
   } catch (error: any) {
     return Error(error);

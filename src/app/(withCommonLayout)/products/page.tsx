@@ -1,6 +1,10 @@
+import AllProducts from "@/components/modules/products";
+import ProductBanner from "@/components/modules/products/banner";
+import CategoryCard from "@/components/ui/core/CategoryCard";
 import NMContainer from "@/components/ui/core/NMContainer";
 import { getAllCategories } from "@/services/category";
 import { getAllProducts } from "@/services/product";
+import { ICategory } from "@/types";
 
 
 const AllProductsPage  = async() => {

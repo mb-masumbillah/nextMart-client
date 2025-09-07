@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { NMTable } from "@/components/ui/core/NMTable";
-import { IProduct } from "@/types";
+import { IMeta, IProduct } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit, Eye, Plus, Trash } from "lucide-react";
 import Image from "next/image";
@@ -10,12 +10,14 @@ import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 import DiscountModel from "./DiscountModel";
+import TablePagination from "@/components/ui/core/NMTable/TablePagination";
 
 type TProductProps = {
   products: IProduct[];
+  meta: IMeta
 };
 
-const ManageProducts = ({ products }: TProductProps) => {
+const ManageProducts = ({ products, meta }: TProductProps) => {
   const router = useRouter();
   const [selectedIds, setSelectedIds] = useState<string[] | []>([]);
 
@@ -161,6 +163,7 @@ const ManageProducts = ({ products }: TProductProps) => {
         </div>
       </div>
       <NMTable columns={columns} data={products || []} />
+      <TablePagination totalPage={meta?.totalPage}/>
     </div>
   );
 };

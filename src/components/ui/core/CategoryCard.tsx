@@ -10,14 +10,14 @@ const CategoryCard = ({ category }: { category: ICategory }) => {
         width={100}
         height={150}
         alt="category icon"
-        className="mx-auto"
+        className="w-full h-full object-contain"
       /> */}
       <Image
         src="https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
         width={100}
         height={150}
         alt="category icon"
-        className="mx-auto"
+        className="w-full h-full object-contain"
       />
       <h3 className="text-lg font-semibold truncate mt-3">{category?.name}</h3>
     </div>
