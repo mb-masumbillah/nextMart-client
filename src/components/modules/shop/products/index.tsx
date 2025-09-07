@@ -7,6 +7,9 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Edit, Eye, Plus, Trash } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useState } from "react";
+import DiscountModel from "./DiscountModel";
 
 type TProductProps = {
   products: IProduct[];
@@ -14,6 +17,8 @@ type TProductProps = {
 
 const ManageProducts = ({ products }: TProductProps) => {
   const router = useRouter();
+  const [selectedIds, setSelectedIds] = useState<string[] | []>([]);
+
 
   const handleView = (product: IProduct) => {
     console.log("Viewing product:", product);
@@ -24,6 +29,37 @@ const ManageProducts = ({ products }: TProductProps) => {
   };
 
   const columns: ColumnDef<IProduct>[] = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => {
+            if (value) {
+              setSelectedIds((prev) => [...prev, row.original._id]);
+            } else {
+              setSelectedIds(selectedIds.filter((id) => id !== row.original._id));
+            }
+
+            row.toggleSelected(!!value);
+          }}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+
     {
       accessorKey: "name",
       header: "Product Name",
@@ -111,7 +147,7 @@ const ManageProducts = ({ products }: TProductProps) => {
   ];
 
   return (
-    <div>
+    <div className="space-y-5">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold">Manage Products</h1>
         <div className="flex items-center gap-2">
@@ -121,6 +157,7 @@ const ManageProducts = ({ products }: TProductProps) => {
           >
             Add Product <Plus />
           </Button>
+        <DiscountModel selectedIds={selectedIds} setSelectedIds={setSelectedIds}/>
         </div>
       </div>
       <NMTable columns={columns} data={products || []} />

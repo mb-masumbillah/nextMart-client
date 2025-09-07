@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 
 interface NMContainerProps {
   children: ReactNode;
-  className: string;
+  className?: string;
 }
 
 const NMContainer = ({ children, className = "" }: NMContainerProps) => {
