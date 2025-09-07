@@ -23,7 +23,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { getAllBrands } from "@/services/brand";
 import { getAllCategories } from "@/services/category";
-import { createProduct, updateProduct } from "@/services/product";
+import { updateProduct } from "@/services/product";
 import { IBrand, ICategory, IProduct } from "@/types";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -440,7 +440,7 @@ const UpdateProductForm = ({ product }: { product: IProduct }) => {
           </div>
 
           <Button type="submit" className="mt-5 w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Adding Product....." : "Add Product"}
+            {isSubmitting ? "Updating Product....." : "Update Product"}
           </Button>
         </form>
       </Form>
