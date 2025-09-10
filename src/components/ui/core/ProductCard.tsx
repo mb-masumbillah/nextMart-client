@@ -6,26 +6,28 @@ import Link from "next/link";
 import { IProduct } from "@/types";
 
 const ProductCard = ({ product }: { product: IProduct }) => {
+
+  console.log(product)
   return (
     <Card className="p-3">
       <CardHeader className="relative p-0 h-48">
-        {/* <Image
+        <Image
           src={
-            product?.imageUrls[0] ||
+            product?.imageUrls?.[0] ||
             "https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
           }
           width={500}
           height={500}
           alt="product image"
           className="rounded-sm h-48 object-cover"
-        /> */}
-        <Image
+        />
+        {/* <Image
           src="https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
           width={500}
           height={500}
           alt="product image"
           className="rounded-sm h-48 object-cover"
-        />
+        /> */}
         {product?.stock === 0 && (
           <div className="absolute left-2 top-0 bg-red-500 text-white px-2 rounded-full">
             Out of Stock

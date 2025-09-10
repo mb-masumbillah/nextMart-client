@@ -6,8 +6,7 @@ import Image from "next/image";
 const ProductDetails = ({ product }: { product: IProduct }) => {
   return (
     <div className="grid grid-cols-2 gap-4 border border-white p-4 rounded-md my-5 shadow-sm">
-
-      {/* <div>
+      <div>
         <Image
           src={product?.imageUrls[0]}
           alt="product image"
@@ -26,44 +25,6 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
               className="rounded-md w-full object-cover h-40"
             />
           ))}
-        </div>
-        </div> */}
-      <div>
-        <Image
-          src="https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
-          alt="product image"
-          width={500}
-          height={500}
-          className="rounded-md w-full object-cover h-80"
-        />
-        <div className="grid grid-cols-3 gap-4 mt-5">
-        
-            <Image
-              src="https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
-              alt="product image"
-              width={500}
-              height={500}
-              className="rounded-md w-full object-cover h-40"
-            />
-            
-            <Image
-              src="https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
-              alt="product image"
-              width={500}
-              height={500}
-              className="rounded-md w-full object-cover h-40"
-            />
-            
-            <Image
-              src="https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
-              alt="product image"
-              width={500}
-              height={500}
-              className="rounded-md w-full object-cover h-40"
-            />
-            
-           
-        
         </div>
       </div>
       <div className="bg-white rounded-md p-4">
