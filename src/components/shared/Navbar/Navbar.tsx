@@ -19,26 +19,26 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 const Navbar = () => {
-  const { user, setIsLoading } = useUser();
+   const { user, setIsLoading } = useUser();
   const pathname = usePathname();
-  const route = useRouter();
- 
-  const handleLogOut = async () => {
-    await logout();
-    setIsLoading(true);
+  const router = useRouter();
 
+  const handleLogOut = () => {
+    logout();
+    setIsLoading(true);
     if (protectedRoutes.some((route) => pathname.match(route))) {
-      return route.push("/login");
+      router.push("/");
     }
   };
 
   return (
-    <header className="border-b w-full">
-      <div className="container flex justify-between items-center mx-auto h-16 px-3">
-        <h1 className="text-2xl font-black flex items-center">
-          <Logo />
-          Next Mart
-        </h1>
+    <header className="border-b bg-background w-full sticky top-0 z-10">
+      <div className="container flex justify-between items-center mx-auto h-16 px-5">
+        <Link href="/">
+          <h1 className="text-2xl font-black flex items-center">
+            <Logo /> Next Mart
+          </h1>
+        </Link>
         <div className="max-w-md  flex-grow">
           <input
             type="text"
@@ -50,18 +50,17 @@ const Navbar = () => {
           <Button variant="outline" className="rounded-full p-0 size-10">
             <Heart />
           </Button>
-          <Button variant="outline" className="rounded-full p-0 size-10">
-            <ShoppingBag />
-          </Button>
-          {user ? (
+          <Link href="/cart">
+            <Button variant="outline" className="rounded-full p-0 size-10">
+              <ShoppingBag />
+            </Button>
+          </Link>
+
+          {user?.email ? (
             <>
-              {user?.hasShop ? (
-                ""
-              ) : (
-                <Link href="/create-shop">
-                  <Button className="rounded-full">Create Shop</Button>
-                </Link>
-              )}
+              <Link href="/create-shop">
+                <Button className="rounded-full">Create Shop</Button>
+              </Link>
 
               <DropdownMenu>
                 <DropdownMenuTrigger>
@@ -70,18 +69,21 @@ const Navbar = () => {
                     <AvatarFallback>User</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="bg-white">
+                <DropdownMenuContent>
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>Profile</DropdownMenuItem>
-                  <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href={`/${user?.role}/dashboard`}>Dashboard</Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem>My Shop</DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
+                    className="bg-red-500 cursor-pointer"
                     onClick={handleLogOut}
-                    className="cursor-pointer"
                   >
-                    <LogOut /> Logout
+                    <LogOut />
+                    <span>Log Out</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -97,6 +99,6 @@ const Navbar = () => {
       </div>
     </header>
   );
-};
+}
 
 export default Navbar;

@@ -1,26 +1,46 @@
 import { Button } from "@/components/ui/button";
-import { IProduct } from "@/types";
+import {
+  CartProduct,
+  decrementOrderQuantity,
+  incrementOrderQuantity,
+  orderRemove,
+} from "@/redux/features/cartSlice";
+import { useAppDispatch } from "@/redux/hook";
 import { Minus, Plus, Trash } from "lucide-react";
 import Image from "next/image";
 
-export default function CartProductCard({ product }: { product: IProduct }) {
+export default function CartProductCard({ product }: { product: CartProduct }) {
+  const dispathch = useAppDispatch();
+
+  const handleIncrement = (id: string) => {
+    dispathch(incrementOrderQuantity(id));
+  };
+
+  const handleDecrement = (id: string) => {
+    dispathch(decrementOrderQuantity(id));
+  };
+
+  const handleRemove = (id:string) =>{
+    dispathch(orderRemove(id))
+  }
+
   return (
     <div className="bg-white rounded-lg flex p-5 gap-5">
       <div className="h-full w-32 rounded-md overflow-hidden">
-        {/* <Image
+        <Image
           src={product?.imageUrls?.[0]}
           height={200}
           width={200}
           alt="product"
           className="aspect-square object-cover"
-        /> */}
-        <Image
+        />
+        {/* <Image
           src="https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
           height={200}
           width={200}
           alt="product"
           className="aspect-square object-cover"
-        />
+        /> */}
       </div>
       <div className="flex flex-col justify-between flex-grow">
         <h1 className="text-xl font-semibold">{product?.name}</h1>
@@ -42,16 +62,24 @@ export default function CartProductCard({ product }: { product: IProduct }) {
           </h2>
           <div className="flex items-center gap-2">
             <p className="text-gray-500 font-semibold">Quantity</p>
-            <Button variant="outline" className="size-8 rounded-sm">
+            <Button
+              onClick={() => handleDecrement(product._id)}
+              variant="outline"
+              className="size-8 rounded-sm"
+            >
               <Minus />
             </Button>
             <p className="font-semibold text-xl p-2">
-              {/* {product?.orderQuantity} */}1
+              {product?.orderQuantity}
             </p>
-            <Button variant="outline" className="size-8 rounded-sm">
+            <Button
+              onClick={() => handleIncrement(product._id)}
+              variant="outline"
+              className="size-8 rounded-sm"
+            >
               <Plus />
             </Button>
-            <Button variant="outline" className="size-8 rounded-sm">
+            <Button onClick={() => handleRemove(product._id)} variant="outline" className="size-8 rounded-sm">
               <Trash className="text-red-500/50" />
             </Button>
           </div>

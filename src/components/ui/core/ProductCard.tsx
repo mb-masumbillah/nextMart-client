@@ -1,13 +1,21 @@
+"use client";
+
 import { Heart, ShoppingCart, Star } from "lucide-react";
 import { Button } from "../button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "../card";
 import Image from "next/image";
 import Link from "next/link";
 import { IProduct } from "@/types";
+import { useAppDispatch } from "@/redux/hook";
+import { addProduct } from "@/redux/features/cartSlice";
+
 
 const ProductCard = ({ product }: { product: IProduct }) => {
+  const dispatch = useAppDispatch()
+  const handleAddProduct = (product: IProduct) => {
+    dispatch(addProduct(product))
+  };
 
-  console.log(product)
   return (
     <Card className="p-3">
       <CardHeader className="relative p-0 h-48">
@@ -41,7 +49,7 @@ const ProductCard = ({ product }: { product: IProduct }) => {
             title={product?.name}
             className="font-semibold cursor-pointer text-sm"
           >
-           {product?.name.length > 20
+            {product?.name.length > 20
               ? product?.name?.slice(0, 20) + "..."
               : product?.name}
           </CardTitle>
@@ -52,9 +60,9 @@ const ProductCard = ({ product }: { product: IProduct }) => {
             {product?.offerPrice ? (
               <>
                 <span className="font-semibold mr-2 text-orange-400">
-                   $ {product?.offerPrice.toFixed(2)}
+                  $ {product?.offerPrice.toFixed(2)}
                 </span>
-                   <del className="font-semibold text-xs">
+                <del className="font-semibold text-xs">
                   $ {product?.price.toFixed(2)}
                 </del>
               </>
@@ -86,6 +94,7 @@ const ProductCard = ({ product }: { product: IProduct }) => {
           </Button>
           <Button
             disabled={product?.stock === 0}
+            onClick={() => handleAddProduct(product)}
             variant="outline"
             size="sm"
             className="w-8 h-8 p-0 flex items-center justify-center rounded-full"

@@ -4,8 +4,7 @@ import StoreProvider from "./StoreProvider";
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <UserProvider>
-      {children}
-      {/* <StoreProvider>{children}</StoreProvider> */}
+      <StoreProvider>{children}</StoreProvider>
     </UserProvider>
   );
 };
