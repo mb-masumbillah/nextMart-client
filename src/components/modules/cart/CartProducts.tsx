@@ -1,6 +1,6 @@
 "use client";
 
-import { IProduct } from "@/types";
+
 import Image from "next/image";
 import CartProductCard from "./CartProductCard";
 import emptyCart from "@/app/assets/empty-cart.png";
